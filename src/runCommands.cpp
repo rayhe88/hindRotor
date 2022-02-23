@@ -57,7 +57,7 @@ void runCommands::checkNames() {
     }
 
     if (!output_name.compare(none)) {
-        output_name = string("hrotor");
+        output_name = string(DEFAULTNAME);
         printW();
         cout << "Output name is missing" << endl;
         cout << "           " << output_name
@@ -71,8 +71,9 @@ void runCommands::checkNames() {
         }
     }
     if (flagError == true) {
-        cout << GRE << "SALIMOS" << RST << endl;
-        // exit(EXIT_FAILURE);
+        printE();
+        cout << "End of program: Missing input files";
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -219,7 +220,7 @@ void runCommands::getVersion(char **argv) {
     }
 }
 
-void runCommands::getInertia(char **argv) {
+void runCommands::selectInertia(char **argv) {
     typeI = 1;
     bool flag = false;
     for (int i = 0; i < nargc; i++) {
@@ -297,6 +298,7 @@ void runCommands::getSigma(char **argv) {
         sigma = 1;
     }
 }
+
 void runCommands::getSizeH(char **argv) {
     hsize = 501;
     bool flag = false;
@@ -355,7 +357,103 @@ void runCommands::helper(char **argv) {
         }
     }
     if (flagH) {
-        cout << GRE << "AYUDA" << RST << endl;
+        cout << "\n  Usage: " << argv[0] << " FLAGS [VALUES]" << endl;
+        cout
+            << "  The program computes the rotational partition function for a "
+            << endl;
+        cout << "  molecular system at a temperature T or a range of "
+                "temperatures.\n"
+             << endl;
+        cout << RED << "  Mandatory flags! " << RST << endl;
+        cout
+            << "  -g [string]   Geometry file. Formats supported xyz, wfn, wfx."
+            << endl;
+        cout << "  -p [string]   Potential file. File whit the rotational "
+                "potential."
+             << endl;
+        cout << "                  In the format :" << endl;
+        cout << "                   __________________________ " << endl;
+        cout << "                  |  theta_0   potential_0   |" << endl;
+        cout << "                  |  theta_1   potential_1   |" << endl;
+        cout << "                  |  theta_2   potential_2   |" << endl;
+        cout << "                  |    ...         ...       |" << endl;
+        cout << "                  |  theta_m   potential_m   |" << endl;
+        cout << "                  |__________________________|\n" << endl;
+        cout << "  -t [string]   File with the TOPS information. TOP A is the "
+                "group of"
+             << endl;
+        cout << "                nA atoms, the second line corresponds to the "
+                "indexes of each atom."
+             << endl;
+        cout << "                TOP B is the group of nB atoms, the fourth "
+                "line correspond to the"
+             << endl;
+        cout << "                indexes of each atom in this group." << endl;
+        cout << "                After BOND the atoms that form the axis of "
+                "rotation are assigned."
+             << endl;
+        cout << "                i.e. 5 6" << endl;
+        cout << "                  The file's format is:" << endl;
+        cout << "                   __________________________ " << endl;
+        cout << "                  |>> TOP A  nA              |" << endl;
+        cout << "                  |1 2 5 ... nA              |" << endl;
+        cout << "                  |>> TOP B  nB              |" << endl;
+        cout << "                  |3 4 6 ... nB              |" << endl;
+        cout << "                  |>> BOND                   |" << endl;
+        cout << "                  |5 6                       |" << endl;
+        cout << "                  |__________________________|\n" << endl;
+        cout << GRE << "  Optional flags!" << RST << endl;
+        cout << "  -o [string]   Output name, generic name for the output. "
+                "Default '"
+             << DEFAULTNAME << "'." << endl;
+        cout << "  -T [float]    Select a temperature in Kelvin. Default T = "
+                "298.15 K."
+             << endl;
+        cout << "  -r [float] [float] [int] " << endl;
+        cout << "                Range of temperature." << endl;
+        cout << "                 The first value is initial temperature."
+             << endl;
+        cout << "                 The second value is final temperature."
+             << endl;
+        cout << "                 The third value is number of steps > 1."
+             << endl;
+        cout << "  -s  [int]     Simmetry number (sigma)." << endl;
+        cout << "  -I  [int]     Indicates the kind of Inertia moment I(2,n). "
+                "n can be = 1, 2 or 3."
+             << endl;
+        cout << "                  - I(2,1) the moment of inertia of the "
+                "rotating group is computed"
+             << endl;
+        cout << "                    about the axis containing the twisting "
+                "bond."
+             << endl;
+        cout << "                  - I(2,2) the moment of inertia of the "
+                "rotating group is computed"
+             << endl;
+        cout
+            << "                    about the axis  parallel to the  bound but "
+               "passing through the"
+            << endl;
+        cout << "                    center of mass of rotating group." << endl;
+        cout << "                  - I(2,3) the moment of inertia of the "
+                "rotating group is computed"
+             << endl;
+        cout << "                    about the axis  passing  through  the  "
+                "centers-of-mass of both"
+             << endl;
+        cout << "                    rotating groups and the remainder of the "
+                "molecule. "
+             << endl;
+        cout << "                  - Default n = 1, equivalent to I(2,1). "
+             << endl;
+        cout << "  -n  [int]     Indicates the number  of points  in the "
+                "Fourier  Grid  Hamiltonian"
+             << endl;
+        cout << "                method (H size). Default value is 501 points."
+             << endl;
+        cout << "  -h, -H        Display the help." << endl;
+        cout << "  -v, -V        Display the version." << endl;
+
         exit(EXIT_SUCCESS);
     }
 }
@@ -365,6 +463,8 @@ runCommands::runCommands(int argc, char *argv[]) {
     if (argc == 1) {
         printE();
         cout << " The program needs more input parameters" << endl;
+        cout << "            Try " << argv[0] << " -h to display the help."
+             << endl;
         exit(EXIT_FAILURE);
     }
 
@@ -397,7 +497,7 @@ runCommands::runCommands(int argc, char *argv[]) {
     cout << "Range     Temp :  " << boolalpha << rangeT << endl;
 
     readTopsFile();
-    getInertia(argv);
+    selectInertia(argv);
     getSigma(argv);
     getSizeH(argv);
 }

@@ -12,6 +12,7 @@ using std::string;
 using namespace std;
 
 #define VERSION "0.0"
+#define DEFAULTNAME "hrotor"
 
 class runCommands {
   private:
@@ -23,7 +24,7 @@ class runCommands {
     void helper(char **);
     void getVersion(char **);
     void readTopsFile();
-    void getInertia(char **);
+    void selectInertia(char **);
     void getSigma(char **);
     void getSizeH(char **);
 
