@@ -1,0 +1,26 @@
+
+### Linux ###
+*~
+
+.fuse_hidden*
+
+.directory
+.vscode
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+.nfs*
+
+*.o
+*.x
+*.xyz
+*.cube
+*.cub
+*.log
+*.wfn
+*.dat
+
+
+garbage*
+input*
