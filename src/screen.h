@@ -7,10 +7,10 @@
 // #define GRE "\033[1;3;92m"
 // #define RST "\033[0m"
 //#else
- #define RED ""
- #define GRE ""
- #define PIN ""
- #define RST ""
+#define RED ""
+#define GRE ""
+#define PIN ""
+#define RST ""
 //#endif
 
 inline void printW() { std::cout << "[" << PIN << "WARNING" << RST << "]  "; }
