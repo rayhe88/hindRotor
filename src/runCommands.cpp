@@ -245,9 +245,9 @@ void runCommands::selectInertia(char **argv) {
     bool flag = false;
     for (int i = 0; i < nargc; i++) {
         if (argv[i][0] == '-' && argv[i][1] == 'I') {
-            flag = true;
             if (argv[i + 1] != NULL) {
                 typeI = atoi(argv[i + 1]);
+                flag = true;
                 if (argv[i + 1][0] == '-') {
                     printW();
                     cout << "Inertia moment flag was found but no "
@@ -257,15 +257,19 @@ void runCommands::selectInertia(char **argv) {
                             " I(2,1)"
                          << endl;
                     typeI = 1;
+                    flag = false;
                 }
+            } else {
+                flag = false;
             }
         }
     }
     if (flag == false) {
         printW();
         cout << "No Inertia moment assigned" << endl;
-        cout << "          The Inertia moment will be taken by default I (2,1) "
-             << endl;
+        cout
+            << "           The Inertia moment will be taken by default I (2,1) "
+            << endl;
         typeI = 1;
     }
     if (typeI < 1 || typeI > 3) {
@@ -273,8 +277,9 @@ void runCommands::selectInertia(char **argv) {
         cout << "The Inertia moment only can take the values of I(2,n) n = 1, "
                 "2 or 3"
              << endl;
-        cout << "          The Inertia moment will be taken by default I (2,1) "
-             << endl;
+        cout
+            << "           The Inertia moment will be taken by default I (2,1) "
+            << endl;
         typeI = 1;
     }
 }
@@ -343,7 +348,7 @@ void runCommands::getSizeH(char **argv) {
     if (flag == false) {
         printW();
         cout << "No Hamiltonian size assigned" << endl;
-        cout << "          The Hamiltonian size will be taken by default H "
+        cout << "           The Hamiltonian size will be taken by default H "
                 "size "
                 "= 501"
              << endl;
@@ -353,7 +358,7 @@ void runCommands::getSizeH(char **argv) {
         printW();
         cout << "The Hamiltonian size only can take the values H size > 1 "
              << endl;
-        cout << "          The Hamiltonian size will be taken by default H "
+        cout << "           The Hamiltonian size will be taken by default H "
                 "size "
                 "= 501 "
              << endl;
