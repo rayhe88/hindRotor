@@ -182,7 +182,7 @@ void Hamiltonian::printWaveFunction(string init) {
         for (int j = 0; j < nx; j++) {
             wf = evecT(i, j);
             fout << setw(16) << setprecision(8) << fixed << scientific
-                 << wf + eval[j];
+                 << wf + (eval[j] * 2625.5);
         }
         fout << endl;
     }
@@ -201,7 +201,7 @@ void Hamiltonian::printDensity(string init) {
         for (int j = 0; j < nx; j++) {
             wf = evecT(i, j);
             fout << setw(16) << setprecision(8) << fixed << scientific
-                 << (wf * wf) + eval[j];
+                 << (wf * wf) + (eval[j] * 2626.6);
         }
         fout << endl;
     }
@@ -214,13 +214,20 @@ void Hamiltonian::printEnergy(string init) {
     ofstream fout;
     fout.open(name.c_str(), fstream::out);
 
-    for (int i = 0; i < nx; i++) {
-        fout << setw(16) << setprecision(8) << fixed << scientific << grid[i];
-        for (int j = 0; j < nx; j++) {
-            fout << setw(16) << setprecision(8) << fixed << scientific
-                 << eval[j];
-        }
-        fout << endl;
+    // for (int i = 0; i < nx; i++) {
+
+    fout << setw(16) << setprecision(8) << fixed << scientific << grid[0];
+    for (int j = 0; j < nx; j++) {
+        fout << setw(16) << setprecision(8) << fixed << scientific
+             << eval[j] * 2625.5;
     }
+    fout << endl;
+    fout << setw(16) << setprecision(8) << fixed << scientific << grid[nx - 1];
+    for (int j = 0; j < nx; j++) {
+        fout << setw(16) << setprecision(8) << fixed << scientific
+             << eval[j] * 2625.5;
+    }
+    fout << endl;
+    //}
     fout.close();
 }
