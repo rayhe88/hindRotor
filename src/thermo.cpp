@@ -185,12 +185,14 @@ void ThermoCh::getPropertiesAtT(double maxV, double valT, int typeI) {
          << setw(16) << setprecision(8) << fixed << q_hr << endl;
 
     cout << "    S  :    " << setw(16) << setprecision(8) << fixed << entropy_fr
-         << setw(16) << setprecision(8) << fixed << entropy_hr << endl;
+         << setw(16) << setprecision(8) << fixed << entropy_hr
+         << "   kJ / (mol K )" << endl;
     cout << "    E  :    " << setw(16) << setprecision(8) << fixed << energy_fr
-         << setw(16) << setprecision(8) << fixed << energy_hr << endl;
+         << setw(16) << setprecision(8) << fixed << energy_hr << "   kJ / mol "
+         << endl;
     cout << "    Cv :    " << setw(16) << setprecision(8) << fixed
          << capacity_fr << setw(16) << setprecision(8) << fixed << capacity_hr
-         << endl;
+         << "   kJ / (mol K )" << endl;
     cout << "================================================================="
          << endl;
 }
