@@ -4,6 +4,8 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <lapacke.h>
+
 using namespace std;
 
 bool runCommands::exists_file(string name) {
@@ -72,7 +74,7 @@ void runCommands::checkNames() {
     }
     if (flagError == true) {
         printE();
-        cout << "End of program: Missing input files";
+        cout << "End of program: Missing input files" << endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -216,6 +218,24 @@ void runCommands::getVersion(char **argv) {
     if (flagV) {
         printI();
         cout << "Version: " << VERSION << endl;
+        exit(EXIT_SUCCESS);
+    }
+}
+
+void runCommands::getLapackVersion(char **argv) {
+    bool flagV = false;
+    for (int i = 0; i < nargc; i++) {
+        if (argv[i][0] == '-' && argv[i][1] == 'l') {
+            flagV = true;
+        }
+    }
+    if (flagV) {
+        printI();
+        int major, minor, patch;
+        ilaver_(&major, &minor, &patch);
+
+        cout << "Lapack version: " << major << "." << minor << "." << patch
+             << endl;
         exit(EXIT_SUCCESS);
     }
 }
@@ -471,6 +491,7 @@ runCommands::runCommands(int argc, char *argv[]) {
     helper(argv);
 
     getVersion(argv);
+    getLapackVersion(argv);
 
     geometry_name = getName("-g", argv);
     potential_name = getName("-p", argv);

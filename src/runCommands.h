@@ -23,6 +23,7 @@ class runCommands {
     bool exists_file(string);
     void helper(char **);
     void getVersion(char **);
+    void getLapackVersion(char **);
     void readTopsFile();
     void selectInertia(char **);
     void getSigma(char **);
