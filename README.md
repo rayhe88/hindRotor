@@ -111,12 +111,13 @@ the partition function are reported at the end ofthe run.
 
 On the other hand, the following files are also generated:
 
-| File              | Data it contains                                       |
-| ----------------- | ------------------------------------------------------ |
-| output_Energy.dat | eigenvalues of FGH                                     |
-| output_Pot.dat    | Potential using in the FGH evaluate in te grid         |
-| outPut_Rho.dat    | Desity for each eigenstate evaluate in the grid        |
-| outPut_Wf.dat     | Wavefunction for each eigenstate evaluated in the grid |
+| File              | Data it contains                                          |
+| ----------------- | --------------------------------------------------------- |
+| output_Energy.dat | eigenvalues of FGH                                        |
+| output_Pot.dat    | Potential using in the FGH evaluate in te grid            |
+| outPut_Rho.dat    | Desity for each eigenstate evaluate in the grid           |
+| outPut_Wf.dat     | Wavefunction for each eigenstate evaluated in the grid    |
+| outPut_chem.dat   | The information when range Temperature has been activated |
 
 ## Code contributors
 
