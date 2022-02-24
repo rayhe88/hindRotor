@@ -289,7 +289,7 @@ void runCommands::getSigma(char **argv) {
                 sigma = atoi(argv[i + 1]);
                 if (argv[i + 1][0] == '-') {
                     printW();
-                    cout << "Simmetry number flag was found but no "
+                    cout << "Symmetry number flag was found but no "
                             "assigned a value."
                          << endl;
                     cout << "          It will evaluate to "
@@ -302,17 +302,17 @@ void runCommands::getSigma(char **argv) {
     }
     if (flag == false) {
         printW();
-        cout << "No Simmetry number assigned" << endl;
-        cout << "           The Simmetry number will be taken by default sigma "
+        cout << "No Symmetry number assigned" << endl;
+        cout << "           The Symmetry number will be taken by default sigma "
                 "= 1"
              << endl;
         sigma = 1;
     }
     if (sigma < 1) {
         printW();
-        cout << "The Simmetry number only can take the values sigma >= 0 "
+        cout << "The Symmetry number only can take the values sigma >= 0 "
              << endl;
-        cout << "           The Simmetry number will be taken by default sigma "
+        cout << "           The Symmetry number will be taken by default sigma "
                 "= 1 "
              << endl;
         sigma = 1;
@@ -437,7 +437,7 @@ void runCommands::helper(char **argv) {
              << endl;
         cout << "                 The third value is number of steps > 1."
              << endl;
-        cout << "  -s  [int]     Simmetry number (sigma)." << endl;
+        cout << "  -s  [int]     Symmetry number (sigma)." << endl;
         cout << "  -I  [int]     Indicates the kind of Inertia moment I(2,n). "
                 "n can be = 1, 2 or 3."
              << endl;
@@ -471,8 +471,9 @@ void runCommands::helper(char **argv) {
              << endl;
         cout << "                method (H size). Default value is 501 points."
              << endl;
-        cout << "  -h, -H        Display the help." << endl;
-        cout << "  -v, -V        Display the version." << endl;
+        cout << "  -h, -H        Display help." << endl;
+        cout << "  -v, -V        Display version." << endl;
+        cout << "  -l            Display LAPACK version." << endl;
 
         exit(EXIT_SUCCESS);
     }
