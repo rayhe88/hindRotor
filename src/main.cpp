@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
     fourier.printWaveFunction(run.output_name);
     fourier.printDensity(run.output_name);
     fourier.printEnergy(run.output_name);
+    fourier.printEnergyPlot(run.output_name);
 
     ThermoCh chemistry((int)eval.size(), run.sigma, redI, eval);
 

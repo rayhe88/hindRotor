@@ -37,6 +37,7 @@ class Hamiltonian {
     void printWaveFunction(string name);
     void printDensity(string name);
     void printEnergy(string name);
+    void printEnergyPlot(string name);
     void normalizeWF(double);
     void printDistribution(string name, double, double, int);
     void printDistribution(string, double);

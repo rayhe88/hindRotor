@@ -208,8 +208,8 @@ void Hamiltonian::printDensity(string init) {
     fout.close();
 }
 
-void Hamiltonian::printEnergy(string init) {
-    string ext("Energy.dat");
+void Hamiltonian::printEnergyPlot(string init) {
+    string ext("EnergyPlot.dat");
     string name = init + ext;
     ofstream fout;
     fout.open(name.c_str(), fstream::out);
@@ -229,6 +229,21 @@ void Hamiltonian::printEnergy(string init) {
     }
     fout << endl;
     //}
+    fout.close();
+}
+
+void Hamiltonian::printEnergy(string init) {
+    string ext("Ene.dat");
+    string name = init + ext;
+    ofstream fout;
+    fout.open(name.c_str(), fstream::out);
+
+    fout << setw(10) << "Eigenvalue" << setw(20) << "Energy (kJ/mol) " << endl;
+    for (int j = 0; j < nx; j++) {
+        fout << setw(10) << fixed << j << setw(20) << setprecision(8) << fixed
+             << eval[j] * 2625.5 << endl;
+    }
+
     fout.close();
 }
 
