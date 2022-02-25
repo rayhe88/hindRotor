@@ -111,7 +111,7 @@ void ThermoCh::getPropertiesAtRange(double ti, double tf, int nstep, int typeI,
     fout << endl;
     fout << "# Print the values of thermo chemical properties" << endl;
     fout << "#     Temperature:  [" << ti << " : " << tf << "] K" << endl;
-    cout << "      I_red(2," << typeI << ")   : " << setw(16) << setprecision(8)
+    fout << "      I_red(2," << typeI << ")   : " << setw(16) << setprecision(8)
          << fixed << redI << "  Da A^2" << endl;
     fout << "#";
     for (int i = 0; i < 145; i++)
