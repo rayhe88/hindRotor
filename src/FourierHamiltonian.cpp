@@ -256,16 +256,13 @@ void Hamiltonian::printDistribution(string init, double temp) {
     double BoltzmannK = 0.008314462618153242;
     double val, sum;
 
+    sum = 0;
     for (int i = 0; i < nx; i++) {
-        sum = 0;
-        for (int k = 0; k < i; k++) {
-            val = -eval[i] * 2625.5;
-            val /= (BoltzmannK * temp);
-            val = exp(val);
-            sum += val;
-        }
+        val = exp(-(eval[i] * 2625.5) / (BoltzmannK * temp));
+        sum += val;
         fout << setw(16) << setprecision(6) << fixed << scientific
              << (double)i / (nx - 1) << setw(16) << setprecision(6) << fixed
+             << scientific << val << setw(16) << setprecision(6) << fixed
              << scientific << sum << endl;
     }
     fout.close();
@@ -289,7 +286,7 @@ void Hamiltonian::printDistribution(string init, double Ti, double Tf, int nT) {
             temp = Ti + j * dT;
             sum = 0;
             for (int k = 0; k < i; k++) {
-                val = -eval[i] * 2625.5;
+                val = -eval[k] * 2625.5;
                 val /= (BoltzmannK * temp);
                 val = exp(val);
                 sum += val;
