@@ -103,7 +103,7 @@ void runCommands::getTemperature(char **argv) {
     }
     if (flagT == false) {
         printW();
-        cout << " No temperature assigned" << endl;
+        cout << "No temperature assigned" << endl;
         cout << "           The temperature will be taken by default T = "
                 "298.15 K"
              << endl;
