@@ -94,8 +94,8 @@ void Inertia::setRed22(Molecule top1, Molecule top2, int at1, int at2) {
     vecu.normalize();
     vecp = top1.getCentreMass() + vecu * 0.2;
 
-    double reduced = 0.;
-    double it1, it2;
+    double reduced;
+    double it1 = 0., it2 = 0.;
 
     for (int i = 0; i < top1.getTotalAtoms(); i++) {
         it1 += (top1.getMassAtomi(i) *
@@ -117,8 +117,8 @@ void Inertia::setRed23(Molecule top1, Molecule top2, int at1, int at2) {
     // passing through the centers-of-mass of both the rotating group and the
     // remainder of the molecule
 
-    double reduced = 0.;
-    double it1, it2;
+    double reduced;
+    double it1 = 0., it2 = 0.;
 
     for (int i = 0; i < top1.getTotalAtoms(); i++) {
         it1 += (top1.getMassAtomi(i) *
