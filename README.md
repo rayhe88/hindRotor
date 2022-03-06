@@ -40,7 +40,7 @@ The file tree should look like the following:
 -> hrotor/$ tree
 .
 ├── bin
-│   └── hrotor.x
+│   └── hRotor.x
 ├── build
 ├── example
 │   ├── methanol-opt.wfn
