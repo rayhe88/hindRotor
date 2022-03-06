@@ -12,9 +12,10 @@ hRotor has been tested on the following platforms:
 
 - Ubuntu 20.04 LTS (Focal Fossa)
 
-### Aditional Linux erquirements
+### Additional Linux requirements
 
 - g++ 9.3.0 or later
+- cmake 2.4 or later
 - Lapack 3.9.0 or later
 
 ## Citation
@@ -32,15 +33,60 @@ The solution of Schödinger equation is based on the article (FGH):
 
 ## Installation
 
-Let's start by copying or cloning the project in your system. Move to the directory
-**src** containing a file **Makefile**.
-Now run the file by typing **make** inside the **src** directory.
+Let's start by copying or cloning the project in your system. Move or create a **build** directory.
+The file tree should look like the following:
 
 ```
-$ make
+-> hrotor/$ tree
+.
+├── bin
+│   └── hrotor.x
+├── build
+├── example
+│   ├── methanol-opt.wfn
+│   ├── methanolScanT.txt
+│   └── topsFile.txt
+├── include
+│   ├── Atom.h
+│   ├── FourierH.h
+│   ├── HPot.h
+│   ├── Inertia.h
+│   ├── Matrix.h
+│   ├── Molecule.h
+│   ├── runCommands.h
+│   ├── Rvector.h
+│   ├── screen.h
+│   └── thermo.h
+├── README.md
+└── src
+    ├── Atom.cpp
+    ├── CMakeLists.txt
+    ├── FourierH.cpp
+    ├── HPot.cpp
+    ├── Inertia.cpp
+    ├── main.cpp
+    ├── Makefile
+    ├── Matrix.cpp
+    ├── Molecule.cpp
+    ├── runCommands.cpp
+    ├── Rvector.cpp
+    └── thermo.cpp
+
 ```
 
-After the compilation you have a executable file called **_hRotor.x_**, you can run by typing.
+Go to the build directory and run the following commands:
+
+```
+ -> hrotor/build/$ cmake ../src
+```
+
+And then run
+
+```
+-> hrotor/build/$ cmake --build .
+```
+
+The executable **_hRotor.x_** will be created and moved to the **hrotor/bin** directory, you can run by typing.
 
 ```
 $./hRotor.x -g GEOMETRY -p POTENTIAL -t ROTATING_TOPS -o OutputName
