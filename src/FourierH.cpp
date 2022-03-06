@@ -1,4 +1,4 @@
-#include "FourierHamiltonian.h"
+#include "FourierH.h"
 #include "Matrix.h"
 #include "screen.h"
 #include <cmath>
