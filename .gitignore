@@ -8,6 +8,12 @@
 .vscode
 .*swp
 
+# Subdirectories create during build process
+build/CMakeCache.txt
+build/cmake_install.cmake
+build/Makefile
+build/CMakeFiles
+
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
