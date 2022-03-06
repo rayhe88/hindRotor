@@ -1,4 +1,4 @@
-#include "FourierHamiltonian.h"
+#include "FourierH.h"
 #include "HPot.h"
 #include "Inertia.h"
 #include "Molecule.h"
