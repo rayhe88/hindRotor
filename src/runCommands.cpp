@@ -290,6 +290,18 @@ void runCommands::selectInertia(char **argv) {
     }
 }
 
+void runCommands::assignInertia(char **argv) {
+    assignMoment = false;
+    for (int i = 0; i < nargc; i++) {
+        if (argv[i][0] == '-' && argv[i][1] == 'm') {
+            if (argv[i + 1] != NULL) {
+                moment = atof(argv[i + 1]);
+                assignMoment = true;
+            }
+        }
+    }
+}
+
 void runCommands::getSigma(char **argv) {
     sigma = 1;
     bool flag = false;
@@ -531,6 +543,7 @@ runCommands::runCommands(int argc, char *argv[]) {
 
     readTopsFile();
     selectInertia(argv);
+    assignInertia(argv);
     getSigma(argv);
     getSizeH(argv);
 }
