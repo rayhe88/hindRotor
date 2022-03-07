@@ -22,14 +22,19 @@ int main(int argc, char *argv[]) {
 
     mol.loadMolecule(run.geometry_name);
 
-    for (int i = 0; i < (int)run.top1.size(); i++)
-        top1.addAtom(mol.getAtom(run.top1[i]));
-    for (int i = 0; i < (int)run.top2.size(); i++)
-        top2.addAtom(mol.getAtom(run.top2[i]));
+    if (run.assignMoment == false) {
 
-    Inertia moments(top1, top2, run.atom1Bond, run.atom2Bond);
-    // the Inertia moments are in Da A^2 units
-    redI = moments.getIred(run.typeI);
+        for (int i = 0; i < (int)run.top1.size(); i++)
+            top1.addAtom(mol.getAtom(run.top1[i]));
+        for (int i = 0; i < (int)run.top2.size(); i++)
+            top2.addAtom(mol.getAtom(run.top2[i]));
+
+        Inertia moments(top1, top2, run.atom1Bond, run.atom2Bond);
+        // the Inertia moments are in Da A^2 units
+        redI = moments.getIred(run.typeI);
+    } else {
+        redI = run.moment;
+    }
 
     /*double redI21 = 0.671762;
     double redI22 = 0.674461;
