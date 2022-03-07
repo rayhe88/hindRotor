@@ -1,4 +1,5 @@
 #include "Matrix.h"
+
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
@@ -16,7 +17,7 @@ Matrix::Matrix() {
     for (int i = 0; i < nrow; i++) {
         values[i].resize(ncol, 0.);
     }
-};
+}
 
 Matrix::Matrix(int n) {
     ncol = n;
@@ -39,6 +40,7 @@ Matrix::Matrix(int n, int m) {
         values[i].resize(ncol, 0.);
     }
 }
+
 Matrix::Matrix(const Matrix &matB) {
     nrow = matB.nrow;
     ncol = matB.ncol;
@@ -54,6 +56,7 @@ Matrix::Matrix(const Matrix &matB) {
         }
     }
 }
+
 Matrix::Matrix(vector<vector<double>> list) {
     nrow = list.size();
     int nmax = -1;
@@ -77,14 +80,14 @@ Matrix::Matrix(vector<vector<double>> list) {
 
 Matrix::~Matrix() {}
 
-int Matrix::get_ncol() const { return this->ncol; }
+int Matrix::get_ncol() const { return ncol; }
 
-int Matrix::get_nrow() const { return this->nrow; }
+int Matrix::get_nrow() const { return nrow; }
 
-double Matrix::get_vij(int i, int j) const { return this->values[i][j]; }
+double Matrix::get_vij(int i, int j) const { return values[i][j]; }
 
 double &Matrix::operator()(const int &i, const int &j) {
-    return this->values[i][j];
+    return values[i][j];
 }
 
 void Matrix::print(string st) const {
@@ -106,6 +109,7 @@ void Matrix::print() const {
         cout << endl;
     }
 }
+
 void Matrix::print(int _row, int _col, string name) const {
     cout << "  Matrix: " << name << endl;
     for (int i = 0; i < _row; i++) {
@@ -116,6 +120,7 @@ void Matrix::print(int _row, int _col, string name) const {
         cout << endl;
     }
 }
+
 void Matrix::fill() {
     for (int i = 0; i < nrow; i++) {
         for (int j = 0; j < ncol; j++) {
@@ -169,13 +174,11 @@ Matrix Matrix::inverse() {
     }
 
     dgetrf_(&m, &n, mat, &n, pivot, &error);
-    // cout << " dgetrf error : " << error << " , should be zero" << endl;
     if (error != 0) {
         cout << "  [ERROR] dgetrf FAILS to factorize! " << endl;
     }
 
     dgetri_(&n, mat, &n, pivot, works, &nn, &error);
-    // cout << " dgetri error : " << error << " , should be zero" << endl;
     if (error != 0) {
         cout << "  [ERROR] dgetri FAILS to compute the inverse! " << endl;
     }
@@ -257,6 +260,7 @@ void Matrix::Resize(int irow, int icol) {
         values[i].resize(ncol, 0.);
     }
 }
+
 // Scalar Operations
 Matrix Matrix::operator+(double val) {
     Matrix res(nrow, ncol);
@@ -339,7 +343,6 @@ Matrix Matrix::operator*(Matrix &B) {
 }
 
 Matrix &Matrix::operator=(const Matrix &matA) {
-    // Matrix res(matA.nrow, matA.ncol);
     this->nrow = matA.nrow;
     this->ncol = matA.ncol;
     this->ntot = matA.ntot;

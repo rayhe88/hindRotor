@@ -1,6 +1,7 @@
 #include "FourierH.h"
 #include "Matrix.h"
 #include "screen.h"
+
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -214,8 +215,6 @@ void Hamiltonian::printEnergyPlot(string init) {
     ofstream fout;
     fout.open(name.c_str(), fstream::out);
 
-    // for (int i = 0; i < nx; i++) {
-
     fout << setw(16) << setprecision(8) << fixed << scientific << grid[0];
     for (int j = 0; j < nx; j++) {
         fout << setw(16) << setprecision(8) << fixed << scientific
@@ -228,7 +227,7 @@ void Hamiltonian::printEnergyPlot(string init) {
              << eval[j] * 2625.5;
     }
     fout << endl;
-    //}
+
     fout.close();
 }
 

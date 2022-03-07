@@ -1,11 +1,22 @@
 #include "Molecule.h"
 #include "Rvector.h"
 #include "screen.h"
+
 #include <algorithm>
 #include <cctype>
 #include <iomanip>
 #include <iostream>
 using namespace std;
+
+inline bool checkExtention(string const &name, string const &ending) {
+    if (ending.size() > name.size())
+        return false;
+    return std::equal(ending.rbegin(), ending.rend(), name.rbegin());
+}
+
+inline bool is_number(const string &s) {
+    return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+}
 
 Molecule::Molecule() {
     natoms = 0;
@@ -67,12 +78,12 @@ void Molecule::ConvertAngstrom2Bohr() {
 }
 
 void Molecule::update() {
-    cout << " === Entramos a update" << endl;
+    cout << " === Update the molecular data ===" << endl;
     ConvertAngstrom2Bohr();
     totalMass = getTotalMass();
     centreMass = getCentreMass();
     Translate2CentreMass();
-    cout << " === Salimos de updat" << endl;
+    cout << " =================================" << endl;
 }
 
 void Molecule::status() {
@@ -108,16 +119,6 @@ double Molecule::getZcoorCM() { return centreMass.get_z(); }
 Atom Molecule::getAtom(int idx) { return atoms[idx]; }
 
 Rvector Molecule::getCoors(int idx) { return atoms[idx].getCoors(); }
-
-inline bool checkExtention(string const &name, string const &ending) {
-    if (ending.size() > name.size())
-        return false;
-    return std::equal(ending.rbegin(), ending.rend(), name.rbegin());
-}
-
-inline bool is_number(const string &s) {
-    return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
-}
 
 void Molecule::loadMolecule(const string &name) {
 
@@ -219,7 +220,7 @@ void Molecule::readXYZfile(const string &name) {
         if (!is_number(tmp)) {
             s = string(tmp);
             s.erase(std::remove_if(s.begin(), s.end(),
-                                   [](auto ch) { return std::isdigit(ch); }),
+                                   [](char ch) { return std::isdigit(ch); }),
                     s.end());
             addAtom(Atom(s, xt, yt, zt));
         } else {

@@ -95,7 +95,8 @@ void Inertia::setRed22(Molecule top1, Molecule top2, int at1, int at2) {
     vecp = top1.getCentreMass() + vecu * 0.2;
 
     double reduced;
-    double it1 = 0., it2 = 0.;
+    double it1 = (double) 0.; 
+    double it2 = (double) 0.;
 
     for (int i = 0; i < top1.getTotalAtoms(); i++) {
         it1 += (top1.getMassAtomi(i) *
@@ -118,7 +119,8 @@ void Inertia::setRed23(Molecule top1, Molecule top2, int at1, int at2) {
     // remainder of the molecule
 
     double reduced;
-    double it1 = 0., it2 = 0.;
+    double it1 = (double) 0.;
+    double it2 = (double) 0.;
 
     for (int i = 0; i < top1.getTotalAtoms(); i++) {
         it1 += (top1.getMassAtomi(i) *

@@ -1,5 +1,7 @@
 #include "runCommands.h"
 #include "screen.h"
+#include "version.h"
+
 #include <cctype>
 #include <cmath>
 #include <iomanip>
@@ -217,7 +219,11 @@ void runCommands::getVersion(char **argv) {
     }
     if (flagV) {
         printI();
-        cout << "Version: " << VERSION << endl;
+        cout << "Version: " << PROJECT_VER << endl;
+        printI();
+        cout << "Compilation Date: " << __DATE__ << "  " << __TIME__ << endl;
+        printI();
+        cout << "Git SHA1: " << GIT_SHA1 << endl;
         exit(EXIT_SUCCESS);
     }
 }

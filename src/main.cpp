@@ -4,6 +4,7 @@
 #include "Molecule.h"
 #include "runCommands.h"
 #include "thermo.h"
+
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
@@ -42,7 +43,6 @@ int main(int argc, char *argv[]) {
 
     vpotentialT.getCoeffs();
 
-    // vpotentialT.printV(720, run.output_name);
     vmax = vpotentialT.getMaxV();
 
     Hamiltonian fourier(run.hsize, redI, vpotentialT.getCoeffA(),

@@ -1,5 +1,6 @@
 #include "HPot.h"
 #include "Matrix.h"
+
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
@@ -23,6 +24,7 @@ void HPot::loadPotential(const string &name) {
     if (!finp.good()) {
         cout << " The file [" << name << "] can't be opened!" << endl;
     }
+    
     finp.seekg(finp.beg);
     while (!finp.eof()) {
         finp >> theta >> energy;
