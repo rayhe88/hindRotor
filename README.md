@@ -56,7 +56,8 @@ The file tree should look like the following:
 │   ├── runCommands.h
 │   ├── Rvector.h
 │   ├── screen.h
-│   └── thermo.h
+│   ├── thermo.h
+│   └── version.h.in
 ├── README.md
 └── src
     ├── Atom.cpp
@@ -102,17 +103,18 @@ There are mandatory flags such as:
 
 There are also optional flags such as:
 
-| flag        | Type            | Description                                     |
-| ----------- | --------------- | ----------------------------------------------- |
-| `-o`        | string          | Asign a name for the outpu                      |
-| `-T`        | float           | Indicate a Temperature T different to 298.15 K  |
-| `-r`        | float float int | Indicate a range of temperature: Ti, Tf, stepsT |
-| `-s`        | int             | Indicate the symmetry number                    |
-| `-I`        | int             | Indicate the n in I(2,n) for the Inertia moment |
-| `-n`        | int             | Indicate the size in FGH method                 |
-| `-l`        |                 | Display LAPACK version                          |
-| `-v` o `-V` |                 | Display version                                 |
-| `-h` o `-H` |                 | Display help                                    |
+| flag        | Type            | Description                                              |
+| ----------- | --------------- | -------------------------------------------------------- |
+| `-o`        | string          | Asign a name for the outpu                               |
+| `-T`        | float           | Indicate a Temperature T different to 298.15 K           |
+| `-r`        | float float int | Indicate a range of temperature: Ti, Tf and nT           |
+| `-s`        | int             | Indicate the symmetry number                             |
+| `-I`        | int             | Indicate the n in I(2,n) for the Inertia moment          |
+| `-m`        | float           | Assign a numerical value for the Inertia moment          |
+| `-n`        | int             | Indicate the size in FGH method                          |
+| `-l`        |                 | Display LAPACK version                                   |
+| `-v` o `-V` |                 | Display the code version, compilation date, and git info |
+| `-h` o `-H` |                 | Display help                                             |
 
 ### Outputs
 
