@@ -15,7 +15,7 @@ hRotor has been tested on the following platforms:
 ### Additional Linux requirements
 
 - g++ 9.3.0 or later
-- cmake 2.4 or later
+- cmake 3.8 or later
 - Lapack 3.9.0 or later
 
 ## Citation
