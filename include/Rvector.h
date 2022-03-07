@@ -22,7 +22,6 @@ class Rvector {
     double get_y(void);
     double get_z(void);
 
-    // Rvector( const Rvector&);
     double operator[](int);
 
     void operator+=(const Rvector &);

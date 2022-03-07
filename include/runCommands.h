@@ -6,13 +6,13 @@ using std::vector;
 #include <fstream>
 #include <iostream>
 #include <string>
-
 using std::string;
+
+#include "version.h"
 
 using namespace std;
 
-#define VERSION "0.0"
-#define DEFAULTNAME "hrotor"
+#define DEFAULTNAME PROJECT_NAME
 
 class runCommands {
   private:
