@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 project (hrotor VERSION "0.0")
 
 execute_process(COMMAND
-  git describe --match=NeVeRmAtCh --always --abbrev=40 --dirty
+  git describe --match=NeVeRmAtCh --always --abbrev=7 --dirty
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
   OUTPUT_VARIABLE GIT_SHA1
   ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
