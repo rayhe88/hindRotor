@@ -26,6 +26,7 @@ class runCommands {
     void getLapackVersion(char **);
     void readTopsFile();
     void selectInertia(char **);
+    void assignInertia(char **);
     void getSigma(char **);
     void getSizeH(char **);
 
@@ -43,12 +44,14 @@ class runCommands {
     vector<int> top1;
     vector<int> top2;
     double temp;
+    double moment;
 
     int ntemp;
     double tempi, tempf, htemp;
 
     bool singleT = false;
     bool rangeT = false;
+    bool assignMoment = false;
     runCommands(int, char **);
 };
 #endif
