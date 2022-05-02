@@ -71,7 +71,15 @@ double Hamiltonian::Potential(double theta) {
     return vt;
 }
 void Hamiltonian::setKinetic() {
-    double factor = 0.000153618; // h^2/( 4 Pi^2 Ired)
+    // This is the original value that I used... I don't remember how I get the
+    // number...
+    //// double factor = 0.000153618; // h^2/( 4 Pi^2 Ired)
+    // New calculations take in mind the value of reduceM = reduce Inertia
+    // Moment (Da A^2) Inside the Schrodinger equation I need to use atomi
+    // units. 1 Da = 1822.888 486 209 me 1 A = 0.529 177 249 a0
+    double factor = 1. / 510.460839399;
+    // The value 510.4608393999 is the factor to convert (Da A^2) -> (me a0^2)
+    // reduceM needs to enter in Da A^2 units.
     kinetic.clear();
 
     for (int l = 0; l <= nk; l++) {
