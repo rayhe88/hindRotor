@@ -24,9 +24,11 @@ class ThermoCh {
 
     void getPropertiesAtT(double, double, int);
 
+    void getPropertiesAtT_range(double, double, int);
+
     double getFunctionQhr(double temp);
 
-    double getEntropy_hr(double q, double temp);
+    double getEntropy_hr(double temp);
 
     double getEnergy_hr(double temp);
 
@@ -34,7 +36,7 @@ class ThermoCh {
 
     double getFunctionQfr(double temp);
 
-    double getEntropy_fr(double q);
+    double getEntropy_fr(double temp);
 
     double getEnergy_fr(double temp);
 

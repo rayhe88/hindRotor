@@ -68,6 +68,8 @@ int main(int argc, char *argv[]) {
 
     ThermoCh chemistry((int)eval.size(), run.sigma, redI, eval);
 
+    //    chemistry.getPropertiesAtT_range(vmax, run.temp, run.typeI);
+
     if (run.singleT)
         chemistry.getPropertiesAtT(vmax, run.temp, run.typeI);
 

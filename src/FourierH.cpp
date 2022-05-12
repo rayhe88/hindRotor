@@ -70,20 +70,20 @@ double Hamiltonian::Potential(double theta) {
 
     return vt;
 }
+
 void Hamiltonian::setKinetic() {
-    // This is the original value that I used... I don't remember how I get the
-    // number...
-    //// double factor = 0.000153618; // h^2/( 4 Pi^2 Ired)
-    // New calculations take in mind the value of reduceM = reduce Inertia
-    // Moment (Da A^2) Inside the Schrodinger equation I need to use atomi
-    // units. 1 Da = 1822.888 486 209 me 1 A = 0.529 177 249 a0
-    double factor = 1. / 510.460839399;
-    // The value 510.4608393999 is the factor to convert (Da A^2) -> (me a0^2)
-    // reduceM needs to enter in Da A^2 units.
+    // This is the original value, the very original
+    double factor = 6509.657026642;
+    // To obtaing this value, I used the next transformation:
+    // I(Da A^2) (1822.889888817 me / 1 Da) (1.8897259886 a0 / 1 A)^2
+    // I(Da A^2) (6509.657026642 me a0^2 / Da A^2) = I (me a0^2)
+    // The value of reduceM needs to be in Da A^2.
+
     kinetic.clear();
 
     for (int l = 0; l <= nk; l++) {
-        kinetic.push_back((factor / (2. * reduceM)) * pow(l * deltak, 2));
+        kinetic.push_back((1. / (2. * factor * reduceM)) *
+                          pow(l * deltak, 2.0));
     }
 }
 
@@ -185,13 +185,15 @@ void Hamiltonian::printWaveFunction(string init) {
     ofstream fout;
     fout.open(name.c_str(), fstream::out);
     double wf;
+    // Converts the Energy in Hartree to kJ mol^-1
+    static double Eh2kJmol = 2625.5;
     Matrix evecT = evec.transpose();
     for (int i = 0; i < nx; i++) {
         fout << setw(16) << setprecision(8) << fixed << scientific << grid[i];
         for (int j = 0; j < nx; j++) {
             wf = evecT(i, j);
             fout << setw(16) << setprecision(8) << fixed << scientific
-                 << wf + (eval[j] * 2625.5);
+                 << wf + (eval[j] * Eh2kJmol);
         }
         fout << endl;
     }
@@ -204,13 +206,15 @@ void Hamiltonian::printDensity(string init) {
     ofstream fout;
     fout.open(name.c_str(), fstream::out);
     double wf;
+    // Converts the Energy in Hartree to kJ mol^-1
+    static double Eh2kJmol = 2625.5;
     Matrix evecT = evec.transpose();
     for (int i = 0; i < nx; i++) {
         fout << setw(16) << setprecision(8) << fixed << scientific << grid[i];
         for (int j = 0; j < nx; j++) {
             wf = evecT(i, j);
             fout << setw(16) << setprecision(8) << fixed << scientific
-                 << (wf * wf) + (eval[j] * 2626.6);
+                 << (wf * wf) + (eval[j] * Eh2kJmol);
         }
         fout << endl;
     }
@@ -221,6 +225,8 @@ void Hamiltonian::printEnergyPlot(string init) {
     string ext("EnergyPlot.dat");
     string name = init + ext;
     ofstream fout;
+    // Converts the Energy in Hartree to kJ mol^-1
+    static double Eh2kJmol = 2625.5;
     fout.open(name.c_str(), fstream::out);
 
     fout << setw(16) << setprecision(8) << fixed << scientific << grid[0];
@@ -232,7 +238,7 @@ void Hamiltonian::printEnergyPlot(string init) {
     fout << setw(16) << setprecision(8) << fixed << scientific << grid[nx - 1];
     for (int j = 0; j < nx; j++) {
         fout << setw(16) << setprecision(8) << fixed << scientific
-             << eval[j] * 2625.5;
+             << eval[j] * Eh2kJmol;
     }
     fout << endl;
 
@@ -243,12 +249,14 @@ void Hamiltonian::printEnergy(string init) {
     string ext("Ene.dat");
     string name = init + ext;
     ofstream fout;
+    // Converts the Energy in Hartree to kJ mol^-1
+    static double Eh2kJmol = 2625.5;
     fout.open(name.c_str(), fstream::out);
 
     fout << setw(10) << "Eigenvalue" << setw(20) << "Energy (kJ/mol) " << endl;
     for (int j = 0; j < nx; j++) {
         fout << setw(10) << fixed << j << setw(20) << setprecision(8) << fixed
-             << eval[j] * 2625.5 << endl;
+             << eval[j] * Eh2kJmol << endl;
     }
 
     fout.close();
@@ -257,15 +265,17 @@ void Hamiltonian::printEnergy(string init) {
 void Hamiltonian::printDistribution(string init, double temp) {
     string ext("DistEneT.dat");
     string name = init + ext;
+    // Converts the Energy in Hartree to kJ mol^-1
+    const double Eh2kJmol = 2625.5;
     ofstream fout;
     fout.open(name.c_str(), fstream::out);
 
-    double BoltzmannK = 0.008314462618153242;
+    double BoltzmannK = 0.008314462618153242; // kB in kJ mol^-1 K^-1
     double val, sum;
 
     sum = 0;
     for (int i = 0; i < nx; i++) {
-        val = exp(-(eval[i] * 2625.5) / (BoltzmannK * temp));
+        val = exp(-(eval[i] * Eh2kJmol) / (BoltzmannK * temp));
         sum += val;
         fout << setw(16) << setprecision(6) << fixed << scientific
              << (double)i / (nx - 1) << setw(16) << setprecision(6) << fixed
@@ -282,7 +292,10 @@ void Hamiltonian::printDistribution(string init, double Ti, double Tf, int nT) {
     fout.open(name.c_str(), fstream::out);
 
     double dT = (Tf - Ti) / (double)nT - 1;
-    double BoltzmannK = 0.008314462618153242;
+    const double BoltzmannK = 0.008314462618153242; // kB in kJ mol^-1 K^-1
+    // Converts the Energy in Hartree to kJ mol^-1
+    const double Eh2kJmol = 2625.5;
+
     double val, sum;
     double temp;
 
@@ -293,8 +306,7 @@ void Hamiltonian::printDistribution(string init, double Ti, double Tf, int nT) {
             temp = Ti + j * dT;
             sum = 0;
             for (int k = 0; k < i; k++) {
-                val = -eval[k] * 2625.5;
-                val /= (BoltzmannK * temp);
+                val = -eval[k] * Eh2kJmol / (BoltzmannK * temp);
                 val = exp(val);
                 sum += val;
             }

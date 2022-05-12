@@ -21,8 +21,8 @@ ThermoCh::ThermoCh(int n, int sig, double red, vector<double> ener) {
         energy.push_back(ener[i]);
     }
 
-    unitfactor = 2625.5;               // kJ / mol
-    kBoltzmann = 0.008314462618153242; // kB in kJ / (mol K)
+    unitfactor = 2625.5;               // Converts Hartree to kJ mol^-1
+    kBoltzmann = 0.008314462618153242; // kB in kJ mol^-1 K^-1
 
     change_energy(unitfactor);
 }
@@ -37,28 +37,30 @@ void ThermoCh::change_energy(double factor) {
  *       Hindered rotor  Properties
  ***************************************************************/
 double ThermoCh::getFunctionQhr(double temp) {
-    double q = 0;
-    for (int i = 0; i < nrel; i++) {
-        q += exp(-energy[i] / (kBoltzmann * temp));
+    double q = 0.f;
+    for (int j = 0; j < nrel; j++) {
+        q += exp(-energy[j] / (kBoltzmann * temp));
     }
 
     return q / sigma;
 }
 
-double ThermoCh::getEntropy_hr(double q, double temp) {
+double ThermoCh::getEntropy_hr(double temp) {
     double s;
-    double num = 0., den = 0.;
+    double num = 0.f, den = 0.f;
+    double q;
     for (int j = 0; j < nrel; j++) {
         num += energy[j] * exp(-energy[j] / (kBoltzmann * temp));
         den += exp(-energy[j] / (kBoltzmann * temp));
     }
-    s = kBoltzmann * log(q) + (num / (temp * den));
+    q = den / sigma;
+    s = kBoltzmann * log(q) + (1. / temp) * (num / den);
 
     return s;
 }
 
 double ThermoCh::getEnergy_hr(double temp) {
-    double num = 0., den = 0.;
+    double num = 0.f, den = 0.f;
     for (int j = 0; j < nrel; j++) {
         num += energy[j] * exp(-energy[j] / (kBoltzmann * temp));
         den += exp(-energy[j] / (kBoltzmann * temp));
@@ -67,18 +69,21 @@ double ThermoCh::getEnergy_hr(double temp) {
 }
 
 double ThermoCh::getCapacity_hr(double temp) {
-    double t0 = 0., t1 = 0., t2 = 0., t3 = 0.;
-    double valexp;
+    double d0q = 0.f, d1q = 0.f, d2q = 0.f;
+    double valexp, cv;
     for (int j = 0; j < nrel; j++) {
         valexp = exp(-energy[j] / (kBoltzmann * temp));
 
-        t0 += valexp;
-        t1 += energy[j] * energy[j] * valexp / (kBoltzmann * temp * temp);
-        t2 += energy[j] * valexp / (kBoltzmann * temp * temp);
-        t3 += energy[j] * valexp;
+        d0q += valexp;
+        d1q += energy[j] * valexp;
+        d2q += pow(energy[j], 2.f) * valexp;
     }
 
-    return ((t0 * t1) - (t2 * t3)) / (t0 * t0);
+    cv = (d0q * d2q - d1q * d1q) / (d0q * d0q);
+
+    cv /= (kBoltzmann * temp * temp);
+
+    return cv;
 }
 
 /****************************************************************
@@ -91,7 +96,10 @@ double ThermoCh::getFunctionQfr(double temp) {
     return val / sigma;
 }
 
-double ThermoCh::getEntropy_fr(double q) { return kBoltzmann * (log(q) + 0.5); }
+double ThermoCh::getEntropy_fr(double temp) {
+    double q = sqrt(redI * temp * 0.129527) / sigma;
+    return kBoltzmann * (log(q) + 0.5);
+}
 
 double ThermoCh::getEnergy_fr(double temp) { return kBoltzmann * temp / 2.; }
 
@@ -112,8 +120,8 @@ void ThermoCh::getPropertiesAtRange(double ti, double tf, int nstep, int typeI,
     fout << endl;
     fout << "# Print the values of thermo chemical properties" << endl;
     fout << "#     Temperature:  [" << ti << " : " << tf << "] K" << endl;
-    fout << "      I_red(2," << typeI << ")   : " << setw(16) << setprecision(8)
-         << fixed << redI << "  Da A^2" << endl;
+    fout << "#      I_red(2," << typeI << ")   : " << setw(16)
+         << setprecision(8) << fixed << redI << "  Da A^2" << endl;
     fout << "#";
     for (int i = 0; i < 145; i++)
         fout << "=";
@@ -127,13 +135,15 @@ void ThermoCh::getPropertiesAtRange(double ti, double tf, int nstep, int typeI,
         fout << "=";
     fout << endl;
 
+    fout << " # Cv are in J mol-1 K-1" << endl;
+
     for (int i = 0; i < nstep; i++) {
         valT = ti + i * deltaT;
         double q_hr = getFunctionQhr(valT);
         double q_fr = getFunctionQfr(valT);
 
-        double entropy_hr = getEntropy_hr(q_hr, valT);
-        double entropy_fr = getEntropy_fr(q_fr);
+        double entropy_hr = getEntropy_hr(valT);
+        double entropy_fr = getEntropy_fr(valT);
 
         double energy_hr = getEnergy_hr(valT);
         double energy_fr = getEnergy_fr(valT);
@@ -146,25 +156,15 @@ void ThermoCh::getPropertiesAtRange(double ti, double tf, int nstep, int typeI,
              << entropy_fr << setw(16) << setprecision(8) << fixed << entropy_hr
              << setw(16) << setprecision(8) << fixed << energy_fr << setw(16)
              << setprecision(8) << fixed << energy_hr << setw(16)
-             << setprecision(8) << fixed << capacity_fr << setw(16)
-             << setprecision(8) << fixed << capacity_hr << endl;
+             << setprecision(8) << fixed << capacity_fr * 1000.0 << setw(16)
+             << setprecision(8) << fixed << capacity_hr * 1000.0 << endl;
     }
     fout.close();
 }
 
 void ThermoCh::getPropertiesAtT(double maxV, double valT, int typeI) {
-    double unitfactor = 2625.5; // Transform Hartree to kJ / mol
-    double q_hr = getFunctionQhr(valT);
-    double q_fr = getFunctionQfr(valT);
-
-    double entropy_hr = getEntropy_hr(q_hr, valT);
-    double entropy_fr = getEntropy_fr(q_fr);
-
-    double energy_hr = getEnergy_hr(valT);
-    double energy_fr = getEnergy_fr(valT);
-
-    double capacity_hr = getCapacity_hr(valT);
-    double capacity_fr = getCapacity_fr();
+    // Converts the Energy in Hartree to kJ mol^-1
+    const double Eh2kJmol = 2625.5;
     cout << "================================================================="
          << endl;
     cout << " Print the values of thermo chemical properties" << endl;
@@ -173,11 +173,28 @@ void ThermoCh::getPropertiesAtT(double maxV, double valT, int typeI) {
     cout << "          kB T     : " << setw(16) << setprecision(8) << fixed
          << valT * kBoltzmann << "  kJ / mol" << endl;
     cout << " Highest potential : " << setw(16) << setprecision(8) << fixed
-         << maxV * unitfactor << "  kJ / mol" << endl;
+         << maxV * Eh2kJmol << "  kJ / mol" << endl;
+    cout << "                     " << setw(16) << setprecision(8) << fixed
+         << maxV * Eh2kJmol / kBoltzmann << "  K" << endl;
+    cout << "  Symmetry number  : " << setw(16) << setprecision(8) << fixed
+         << sigma << endl;
     cout << "      I_red(2," << typeI << ")   : " << setw(16) << setprecision(8)
          << fixed << redI << "  Da A^2" << endl;
     cout << "================================================================="
          << endl;
+
+    double q_hr = getFunctionQhr(valT);
+    double q_fr = getFunctionQfr(valT);
+
+    double entropy_hr = getEntropy_hr(valT);
+    double entropy_fr = getEntropy_fr(valT);
+
+    double energy_hr = getEnergy_hr(valT);
+    double energy_fr = getEnergy_fr(valT);
+
+    double capacity_hr = getCapacity_hr(valT);
+    double capacity_fr = getCapacity_fr();
+
     cout << "                  Free Rotor    Hindered Rotor" << endl;
     cout << "================================================================="
          << endl;
@@ -192,8 +209,57 @@ void ThermoCh::getPropertiesAtT(double maxV, double valT, int typeI) {
          << setw(16) << setprecision(8) << fixed << energy_hr << "   kJ / mol "
          << endl;
     cout << "    Cv :    " << setw(16) << setprecision(8) << fixed
-         << capacity_fr << setw(16) << setprecision(8) << fixed << capacity_hr
-         << "   kJ / (mol K )" << endl;
+         << capacity_fr * 1000.0 << setw(16) << setprecision(8) << fixed
+         << capacity_hr * 1000.0 << "   J / (mol K )" << endl;
     cout << "================================================================="
          << endl;
+}
+
+void ThermoCh::getPropertiesAtT_range(double maxV, double valT, int typeI) {
+    // Converts the Energy in Hartree to kJ mol^-1
+    const double Eh2kJmol = 2625.5;
+    string name("DataChem2.dat");
+    ofstream fout;
+    fout.open(name.c_str(), fstream::out);
+
+    fout << "#================================================================="
+         << endl;
+    fout << "# Print the values of thermo chemical properties" << endl;
+    fout << "#      Temperature  : " << setw(16) << setprecision(8) << fixed
+         << valT << "  K" << endl;
+    fout << "#          kB T     : " << setw(16) << setprecision(8) << fixed
+         << valT * kBoltzmann << "  kJ / mol" << endl;
+    fout << "# Highest potential : " << setw(16) << setprecision(8) << fixed
+         << maxV * Eh2kJmol << "  kJ / mol" << endl;
+    fout << "#  Symmetry number  : " << setw(16) << setprecision(8) << fixed
+         << sigma << endl;
+    fout << "#      I_red(2," << typeI << ")   : " << setw(16)
+         << setprecision(8) << fixed << redI << "  Da A^2" << endl;
+    fout << "#================================================================="
+         << endl;
+
+    fout << "#" << setw(15) << "ndat" << setw(16) << "Qtor" << setw(16) << "S"
+         << setw(16) << "E" << setw(16) << "Cv" << endl;
+
+    int nmax = nrel;
+
+    for (int idata = 5; idata < nmax; idata += 5) {
+        nrel = idata;
+        double q_hr = getFunctionQhr(valT);
+        double entropy_hr = getEntropy_hr(valT);
+        double energy_hr = getEnergy_hr(valT);
+        double capacity_hr = getCapacity_hr(valT);
+
+        fout << setw(16) << setprecision(8) << fixed << nrel;
+
+        fout << setw(16) << setprecision(8) << fixed << q_hr;
+
+        fout << setw(16) << setprecision(8) << fixed << entropy_hr;
+
+        fout << setw(16) << setprecision(8) << fixed << energy_hr;
+
+        fout << setw(16) << setprecision(8) << fixed << capacity_hr << endl;
+    }
+
+    fout.close();
 }
