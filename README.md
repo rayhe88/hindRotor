@@ -171,3 +171,4 @@ On the other hand, the following files are also generated:
 
 - Raymundo Hernandez-Esparza (rayhe88@gmail.com)
 - Julio Manuel Hernandez-Perez
+- Sebastian García Pineda
