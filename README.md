@@ -23,13 +23,13 @@ hRotor has been tested on the following platforms:
 The **_hRotor.x_** program is based on the following article:
 
 - **"The 1-D hindered rotor approximation"**, J. Pfaendtner, X. Yu and L. J. Broadbelt,
-  [Theor Chem Account 118, 881 (2007)](https://doi.org/10.1007/s00214-007-0376-5)
+  [*Theor Chem Account*, 118, 881 (2007)](https://doi.org/10.1007/s00214-007-0376-5)
 
 The solution of Schödinger equation is based on the article (FGH):
 
 - **"The Fourier grid Hamiltonian method for bound state eigenvalues and eigenfunctions"**,
   C. C. Marston and G. G. Balint-Kurti,
-  [J. Chem. Phys. 91, 3571 (1989)](https://doi.org/10.1063/1.456888)
+  [*J. Chem. Phys.*, 91, 3571 (1989)](https://doi.org/10.1063/1.456888)
 
 ## Installation
 
