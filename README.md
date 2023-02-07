@@ -1,3 +1,6 @@
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/rayhe88/hindRotor?label=version)
+![GitHub last commit](https://img.shields.io/github/last-commit/rayhe88/hindRotor?label=last%20modified)
+![GitHub top language](https://img.shields.io/github/languages/top/rayhe88/hindRotor?color=green)
 # hRotor
 
 ![rotorCompleto](https://user-images.githubusercontent.com/30420297/155459487-9683adcc-9a37-4995-8d6b-9393bb1dcec1.jpeg)
