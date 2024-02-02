@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
 
     vpotentialT.getCoeffs();
     vpotentialT.checkCoeffs();
+    vpotentialT.printVder(250, run.output_name);
 
     vmax = vpotentialT.getMaxV();
 

@@ -128,6 +128,55 @@ double HPot::potentialV(double theta) {
     return v;
 }
 
+double HPot::der1V(double theta) {
+    double v = 0.;
+    for (int k = 0; k < ndat; k++) {
+        v += (coeffA[k] * (k + 1) * sin(theta * (k + 1)) +
+              coeffB[k] * (k + 1) * cos(theta * (k + 1)));
+    }
+
+    return v;
+}
+
+double HPot::der2V(double theta) {
+    double v = 0.;
+    for (int k = 0; k < ndat; k++) {
+        double k2 = (k + 1) * (k + 1);
+        v += (coeffA[k] * k2 * cos(theta * (k + 1)) -
+              coeffB[k] * k2 * sin(theta * (k + 1)));
+    }
+
+    return v;
+}
+
+void HPot::printVder(int n, const string &init) {
+    string ext("der.dat");
+    string name = init + ext;
+
+    double delta, theta, pot, der1, der2;
+
+    ofstream fout;
+    fout.open(name.c_str(), fstream::out);
+
+    delta = 2. * M_PI / double(n - 1);
+
+    fout << "# File with the Potential, first and second derivative" << endl;
+    fout << "#  Theta(degree)   V(theta)   V'(theta)   V''(theta)" << endl;
+
+    for (int i = 0; i < n; i++) {
+        theta = i * delta;
+        pot = potentialV(theta);
+        der1 = der1V(theta);
+        der2 = der2V(theta);
+        theta *= (180. / M_PI);
+        fout << setw(12) << setprecision(8) << fixed << theta << setw(12)
+             << setprecision(8) << fixed << pot;
+        fout << setw(12) << setprecision(8) << fixed << der1;
+        fout << setw(12) << setprecision(8) << fixed << der2 << endl;
+    }
+    fout.close();
+}
+
 void HPot::printV(int n, const string &init) {
     string ext("pot.dat");
     string name = init + ext;

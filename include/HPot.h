@@ -23,9 +23,12 @@ class HPot {
     void printCoeffA();
     void printCoeffB();
     void printV(int, const string &);
+    void printVder(int, const string &);
     vector<double> &getCoeffA();
     vector<double> &getCoeffB();
     double potentialV(double t);
+    double der1V(double t);
+    double der2V(double t);
     double getMaxV();
 };
 
