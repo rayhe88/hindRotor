@@ -5,13 +5,41 @@
 #include "runCommands.h"
 #include "thermo.h"
 
+#include "Matrix.h"
+
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 using namespace std;
 
+void testEigen(){
+    Matrix testA;
+    Matrix evec;
+    testA.Resize(5,5);
+    testA(0,0) =  1.96; testA(0,1) = -6.49; testA(0,2) = -0.47; testA(0,3) = -7.20; testA(0,4) = -0.65;
+    testA(1,0) = -6.49; testA(1,1) =  3.80; testA(1,2) = -6.39; testA(1,3) =  1.50; testA(1,4) = -6.34;
+    testA(2,0) = -0.47; testA(2,1) = -6.39; testA(2,2) =  4.17; testA(2,3) = -1.51; testA(2,4) =  2.67;
+    testA(3,0) = -7.20; testA(3,1) =  1.50; testA(3,2) = -1.51; testA(3,3) =  5.70; testA(3,4) =  1.80;
+    testA(4,0) = -0.65; testA(4,1) = -6.34; testA(4,2) =  2.67; testA(4,3) =  1.80; testA(4,4) = -7.10;
+
+    double *val = new double[5];
+    evec = testA.eigenSystem(val);
+
+    cout << "Eigenvalues" << endl;
+    for(int i=0; i < 5; i++)
+        cout << setw(6) << setprecision(2) << fixed << val[i] << endl;
+
+    evec.print("Eigenvectors");
+
+    delete [] val;
+
+    exit(EXIT_SUCCESS);
+}
+
 int main(int argc, char *argv[]) {
+
+    //testEigen();
 
     runCommands run(argc, argv);
 
@@ -47,6 +75,7 @@ int main(int argc, char *argv[]) {
     vpotentialT.loadPotential(run.potential_name);
 
     vpotentialT.getCoeffs();
+    vpotentialT.checkCoeffs();
 
     vmax = vpotentialT.getMaxV();
 

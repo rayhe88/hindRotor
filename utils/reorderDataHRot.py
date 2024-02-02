@@ -3,7 +3,7 @@
 '''
     Author  : Raymundo Hernandez-Esparza
     Date    : March, 2023
-    Project : hRotor 
+    Project : hRotor
 
     This little program was created during my postdoc stay at Argonne. It will
     be part of the hRotor project, in the future I hope to write inside the main
@@ -13,10 +13,10 @@
     FQOT-BUAP, sets to zero degrees the value of the minimum energy, and deletes
     if there are repetead values.
 
-    for example: 
+    for example:
        0.0 degrees -> 360.0 degrees,
     -180.0 degrees -> 180.0 degrees.
-    
+
     If there are two values the program takes the mean value, and delete the last
     value in energy and theta.
 
@@ -64,7 +64,7 @@ def reorderData(theta, energy):
     if len(theta) != len(energy):
         print("Error")
         raise(Error)
-    
+
     ndat = len(theta)
 
     theta = theta - theta[0];
@@ -104,7 +104,7 @@ def writeData(fname, theta, energy):
         with extension 'ndatx'.
     '''
     subnames = fname.split('.')
-   
+
     name = subnames[0] + '.ndatx'
     print("\033[32;49;1m The file {} will be created!\033[0m\n".format(name))
     with open(name, 'w') as fout:
@@ -115,7 +115,7 @@ def cleanData(fname):
     ''' Main function here we read the original file '*-energies.dat',
         the values are store into two list, after convert to a numpy
         array. It calls the reorderData file with the numpy arrays for
-        energy and theta, and finally calls the writeData function to dump 
+        energy and theta, and finally calls the writeData function to dump
         into a new file.
     '''
     finp = open(fname, 'r')
@@ -136,11 +136,11 @@ def cleanData(fname):
     mat_energy = np.array(energy)
 
     th, en = reorderData(mat_theta, mat_energy)
-    
+
     writeData(fname, th, en)
 
 
 if __name__ == "__main__":
-    
+
     cleanData(sys.argv[1])
-        
+

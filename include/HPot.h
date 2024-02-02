@@ -19,6 +19,7 @@ class HPot {
     HPot();
     void loadPotential(const string &);
     void getCoeffs();
+    void checkCoeffs();
     void printCoeffA();
     void printCoeffB();
     void printV(int, const string &);

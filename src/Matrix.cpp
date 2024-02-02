@@ -4,7 +4,7 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
-#include <lapacke.h>
+#include <lapack.h>
 
 using namespace std;
 
@@ -94,7 +94,7 @@ void Matrix::print(string st) const {
     cout << "  Matrix: " << st << endl;
     for (int i = 0; i < nrow; i++) {
         for (int j = 0; j < ncol; j++) {
-            cout << setw(10) << setprecision(6) << fixed << values[i][j];
+            cout << setw(6) << setprecision(2) << fixed << values[i][j];
         }
         cout << endl;
     }
@@ -223,7 +223,7 @@ Matrix Matrix::eigenSystem(double *eval) {
         }
     }
 
-    dsyev_(&jobz, &uplo, &n, mat, &n, eval, works, &lwork, &error);
+    dsyev_(&jobz, &uplo, &n, mat, &n, eval, works, &lwork, &error,1,1);
     if (error != 0) {
         cout << "  [ERROR] dsyev FAILS to diagonalize!" << endl;
     }

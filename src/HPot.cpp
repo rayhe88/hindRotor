@@ -24,7 +24,7 @@ void HPot::loadPotential(const string &name) {
     if (!finp.good()) {
         cout << " The file [" << name << "] can't be opened!" << endl;
     }
-    
+
     finp.seekg(finp.beg);
     while (!finp.eof()) {
         finp >> theta >> energy;
@@ -84,6 +84,21 @@ void HPot::getCoeffs() {
     for (int i = 0; i < ndat; i++) {
         coeffB.push_back(Coeff(2 * i + 1, 0));
     }
+}
+
+void HPot::checkCoeffs(){
+    cout << " Check the conditions for Coefficients" << endl;
+    double cond1 = 0., cond2 = 0.;
+    for (int k = 0; k < ndat; k++) {
+        cond1 += coeffB[k] * (k);
+        cond2 += coeffA[k] * (k);
+    }
+
+    cout << " First  condition: " << setw(12)
+         << setprecision(6) << fixed << cond1 << endl;
+    cout << " Second condition: " << setw(12)
+         << setprecision(6) << fixed << cond2 << endl;
+
 }
 
 void HPot::printCoeffA() {
